@@ -6,7 +6,7 @@
 /*   By: moabe < moabe@student.42tokyo.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:15:36 by moabe             #+#    #+#             */
-/*   Updated: 2025/11/18 21:43:43 by moabe            ###   ########.fr       */
+/*   Updated: 2025/12/16 16:56:20 by moabe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,16 @@ char *search_path(char **envp, char *cmd)
 	char	*full_path;
 	int		i;
 
-	if (cmd == NULL || envp == NULL)
+	if (cmd == NULL)
+		return (NULL);
+	if (ft_strchr(cmd, '/'))
+  {
+    if (access(cmd, X_OK) == 0)
+      return (ft_strdup(cmd));
+    else
+      return (NULL);
+  }
+	if (envp == NULL)
 		return (NULL);
 	if (strchr(cmd, '/'))
 	{
@@ -74,8 +83,8 @@ void	execute_cmd(char *cmd, char **envp)
 	cmdpath = search_path(envp, cmd_args[0]);
 	if (cmdpath == NULL)
 	{
-		double_pointer_free(cmd_args);
-		error_exit("command not found");
+		judge_file_path(cmd_args);
+		exit_cmd_not_found(cmd_args);
 	}
 	execve(cmdpath, cmd_args, envp);
 	free(cmdpath);
@@ -86,7 +95,6 @@ void	execute_cmd(char *cmd, char **envp)
 void	child_process1(char *argv[], char **envp, int	*pipe_fd)
 {
 	char	**cmd1;
-	char 	*cmdpath1;
 	int		fd_in;
 
 	fd_in = open(argv[1], O_RDONLY);
@@ -106,7 +114,6 @@ void	child_process1(char *argv[], char **envp, int	*pipe_fd)
 void	child_process2(char *argv[], char **envp, int	*pipe_fd)
 {
 	char	**cmd2;
-	char 	*cmdpath2;
 	int		fd_out;
 	
 	fd_out = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644); //所有者+グループ+そのほか
