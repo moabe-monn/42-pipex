@@ -6,7 +6,7 @@
 /*   By: moabe < moabe@student.42tokyo.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 18:37:09 by moabe             #+#    #+#             */
-/*   Updated: 2025/12/16 18:33:35 by moabe            ###   ########.fr       */
+/*   Updated: 2025/12/16 19:51:30 by moabe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ void	exit_cmd_not_found(char **cmd_args);
 void	judge_file_path(char **cmd_args);
 void	execute_cmd(char *cmd, char **envp);
 char *make_path(char	**paths, char	*path_part, char *cmd);
+char **get_paths(char **envp);
+char *join_path(const char *dir, const char *cmd);
 
 #endif

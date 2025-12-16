@@ -6,47 +6,38 @@
 /*   By: moabe < moabe@student.42tokyo.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:15:36 by moabe             #+#    #+#             */
-/*   Updated: 2025/12/16 19:19:55 by moabe            ###   ########.fr       */
+/*   Updated: 2025/12/16 19:50:37 by moabe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char *search_path(char **envp, char *cmd)
+char    *search_path(char **envp, char *cmd)
 {
-	char	**paths;
-	char	*path_part;
-	char	*full_path;
-	int		i;
+    char    **paths;
+    char    *full_path;
+    int     i;
 
-	if (cmd == NULL)
-		return (NULL);
-	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		else
-			return (NULL);
-	}
-	if (envp == NULL)
-		return (NULL);
-	while (*envp != NULL && strncmp(*envp, "PATH=", 5) != 0)
-		envp++;
-	if (*envp == NULL)
-		return (NULL);
-	paths = ft_split(*envp + 5, ':');
-	if (paths == NULL)
-		return (NULL);
-	i = 0;
-	while (paths[i])
-	{
-		path_part = ft_strjoin(paths[i], "/");
-		full_path = make_path(paths, path_part, cmd);
-		free(full_path);
-		i++;
-	}
-	double_pointer_free(paths);
-	return (NULL);
+    if (cmd && ft_strchr(cmd, '/'))
+    {
+        if (access(cmd, X_OK) == 0)
+            return (ft_strdup(cmd));
+        return (NULL);
+    }
+    paths = get_paths(envp); 
+    i = -1;
+    while (paths && paths[++i])
+    {
+        full_path = join_path(paths[i], cmd);
+        if (full_path && access(full_path, X_OK) == 0)
+        {
+            double_pointer_free(paths);
+            return (full_path);
+        }
+        free(full_path);
+    }
+    double_pointer_free(paths);
+    return (NULL);
 }
 
 void	execute_cmd(char *cmd, char **envp)
