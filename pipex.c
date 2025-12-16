@@ -6,7 +6,7 @@
 /*   By: moabe < moabe@student.42tokyo.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:15:36 by moabe             #+#    #+#             */
-/*   Updated: 2025/12/16 17:55:23 by moabe            ###   ########.fr       */
+/*   Updated: 2025/12/16 19:19:55 by moabe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ char *search_path(char **envp, char *cmd)
 	if (cmd == NULL)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
-  {
-    if (access(cmd, X_OK) == 0)
-      return (ft_strdup(cmd));
-    else
-      return (NULL);
-  }
+	{
+		if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+		else
+			return (NULL);
+	}
 	if (envp == NULL)
 		return (NULL);
 	while (*envp != NULL && strncmp(*envp, "PATH=", 5) != 0)
@@ -75,8 +75,8 @@ void	child_process1(char *argv[], char **envp, int	*pipe_fd)
 	int		fd_in;
 
 	fd_in = open(argv[1], O_RDONLY);
-	if (fd_in == -1) 
-    error_exit(argv[1]);
+	if (fd_in == -1)
+		error_exit(argv[1]);
 	cmd1 = ft_split(argv[2], ' ');
 	if (cmd1 == NULL)
 		error_exit("split error");
@@ -109,7 +109,7 @@ void	child_process2(char *argv[], char **envp, int	*pipe_fd)
 
 int main(int argc, char *argv[], char **envp)
 {
-	int		pipe_fd[2];
+	int 	pipe_fd[2];
 	int		status;
 	pid_t	pid1;
 	pid_t	pid2;
@@ -128,10 +128,8 @@ int main(int argc, char *argv[], char **envp)
 		error_exit("fork");
 	else if (pid2 == 0)
 		child_process2(argv, envp, pipe_fd);
-	close(pipe_fd[0]);
-	close(pipe_fd[1]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, &status, 0);
+	(close(pipe_fd[0]), close(pipe_fd[1]));
+	(waitpid(pid1, NULL, 0), waitpid(pid2, &status, 0));
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (1);

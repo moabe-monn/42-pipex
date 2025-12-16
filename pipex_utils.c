@@ -6,7 +6,7 @@
 /*   By: moabe < moabe@student.42tokyo.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 18:57:31 by moabe             #+#    #+#             */
-/*   Updated: 2025/12/16 17:45:43 by moabe            ###   ########.fr       */
+/*   Updated: 2025/12/16 18:55:11 by moabe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,5 @@ char *make_path(char	**paths, char	*path_part, char *cmd)
 		double_pointer_free(paths);
 		return (full_path);
 	}
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: moabe < moabe@student.42tokyo.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 18:37:09 by moabe             #+#    #+#             */
-/*   Updated: 2025/12/16 16:49:44 by moabe            ###   ########.fr       */
+/*   Updated: 2025/12/16 18:33:35 by moabe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	child_process2(char *argv[], char **envp, int	*pipe_fd);
 void	error_exit(const char *msg);
 void	double_pointer_free(char **array);
 void	exit_cmd_not_found(char **cmd_args);
-void judge_file_path(char **cmd_args);
+void	judge_file_path(char **cmd_args);
 void	execute_cmd(char *cmd, char **envp);
+char *make_path(char	**paths, char	*path_part, char *cmd);
 
 #endif
