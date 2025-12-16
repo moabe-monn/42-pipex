@@ -6,7 +6,7 @@
 /*   By: moabe < moabe@student.42tokyo.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 18:57:31 by moabe             #+#    #+#             */
-/*   Updated: 2025/12/16 16:48:32 by moabe            ###   ########.fr       */
+/*   Updated: 2025/12/16 17:45:43 by moabe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,28 @@ void judge_file_path(char **cmd_args)
 					double_pointer_free(cmd_args);
 					exit(127);
 			}
+	}
+}
+
+char *make_path(char	**paths, char	*path_part, char *cmd)
+{
+	char	*full_path;
+	
+	if (path_part == NULL)
+	{
+		double_pointer_free(paths);
+		return (NULL);
+	}
+	full_path = ft_strjoin(path_part, cmd);
+	free(path_part);
+	if (full_path == NULL)
+	{
+		double_pointer_free(paths);
+		return (NULL);
+	}
+	if (access(full_path, X_OK) == 0)
+	{
+		double_pointer_free(paths);
+		return (full_path);
 	}
 }

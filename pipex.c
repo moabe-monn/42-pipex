@@ -6,7 +6,7 @@
 /*   By: moabe < moabe@student.42tokyo.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 14:15:36 by moabe             #+#    #+#             */
-/*   Updated: 2025/12/16 16:56:20 by moabe            ###   ########.fr       */
+/*   Updated: 2025/12/16 17:55:23 by moabe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,6 @@ char *search_path(char **envp, char *cmd)
   }
 	if (envp == NULL)
 		return (NULL);
-	if (strchr(cmd, '/'))
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		else
-			return (NULL);
-	}
 	while (*envp != NULL && strncmp(*envp, "PATH=", 5) != 0)
 		envp++;
 	if (*envp == NULL)
@@ -48,23 +41,7 @@ char *search_path(char **envp, char *cmd)
 	while (paths[i])
 	{
 		path_part = ft_strjoin(paths[i], "/");
-		if (path_part == NULL)
-		{
-			double_pointer_free(paths);
-			return (NULL);
-		}
-		full_path = ft_strjoin(path_part, cmd);
-		free(path_part);
-		if (full_path == NULL)
-		{
-			double_pointer_free(paths);
-			return (NULL);
-		}
-		if (access(full_path, X_OK) == 0)
-		{
-			double_pointer_free(paths);
-			return (full_path);
-		}
+		full_path = make_path(paths, path_part, cmd);
 		free(full_path);
 		i++;
 	}
