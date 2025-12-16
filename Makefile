@@ -28,6 +28,7 @@ clean:
 fclean: clean
 	rm -rf $(NAME)
 	rm -rf libft/libft.a
+	rm -rf libft.a
 
 re:	fclean all
 
